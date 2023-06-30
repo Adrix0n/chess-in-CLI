@@ -4,7 +4,7 @@ Simple chess game wrote in C++, which uses Ocject-Oriented Programming (OOP) par
 
 # Gameplay:
 
-At the beginning, the program ask the player, if he want to load last game. There is two correct answers: '**t**' - yes and '**n**' - no. After that the figures are placed on the board, which is then shown to the player. Under the board is information, which tells whose turn is it now. To make the move, write coordinates of the figure and then write the destination (for example '**A2A4**' or '**a2a4**'). If the move is incorrect, there would be a relevant information about it. The game also ends with a relevant information (win for black/white or the stalemate).
+At the beginning, the program ask the player, if he want to load last game. There is two correct answers: '**y**' - yes and '**n**' - no. After that the figures are placed on the board, which is then shown to the player. Under the board is information, which tells whose turn is it now. To make the move, write coordinates of the figure and then write the destination (for example '**A2A4**' or '**a2a4**'). If the move is incorrect, there would be a relevant information about it. The game also ends with a relevant information (win for black/white or the stalemate).
 
   
 
