@@ -61,9 +61,9 @@ int main(){
     }
 
     char a;
-    cout<<"Czy chcesz wczytac ostatnia gre? ('t','n'): ";
+    cout<<"Do you want to load last game? ('y','n'): ";
     cin>>a;
-    if(a=='t'){
+    if(a=='y'){
         LoadGame(white,black,&WhoMove,board,&MoveHis);
         PlaceFigures(white,black,board,false);
     }else{
@@ -75,8 +75,8 @@ int main(){
     DrawBoard(white,black,board);
 
     while(1){
-        if(WhoMove) cout<<"Porusza sie gracz bialy"<<endl;
-        else cout<<"Porusza sie gracz czarny"<<endl;
+        if(WhoMove) cout<<"White moves"<<endl;
+        else cout<<"Black moves"<<endl;
         string f="";
         cin>>f;
         for(int i=0;i<4;i++)
@@ -94,12 +94,12 @@ int main(){
             DrawBoard(white,black,board);
             int MoveResult = IsEnd(&WhoMove,board,bw);
             if(MoveResult==1){
-                string winner = WhoMove ? "czarny" : "bialy";
-                cout<<"Koniec gry :) Wygral gracz "<<winner<<endl;
+                string winner = WhoMove ? "Black" : "White";
+                cout<<"The end :) "<<winner<<" is the winner!"<<endl;
                 return 0;
             }
             if(MoveResult==2){
-                cout<<"Koniec gry :) Nastapil remis"<<endl;
+                cout<<"The end :) stalemate"<<endl;
                 return 0;
             }
             MoveHis += f + " ";
@@ -183,20 +183,20 @@ bool MakeMove(figure **white, figure **black, bool *who, figure* b[][8], char* p
     
     // Testing, if the given coordinates are within boundaries
     if(x1<0||x1>7||x2<0||x2>7||y1<0||y1>7||y2<0||y2>7||(x1==x2&&y1==y2)){
-        cout<<"Bledny ruch - Podano zle koordynaty\n";
+        cout<<"Incorrect move - incorrect coordinates\n";
         return 0;
     }
 
     // Testing, if the player is trying to move an empty field
     figure* fig = b[x1][y1];
     if(fig==nullptr){
-        cout<<"Bledny ruch - Poruszasz pustym polem\n";
+        cout<<"Incorrect move - you are trying to move empty field\n";
         return 0;
     }
 
     // Testing, if the player is trying to move an opponent's figure
     if((b[x1][y1]->getcolor()=='w'&&(*who)==0)||(b[x1][y1]->getcolor()=='b'&&(*who)==1)){
-        cout<<"Bledny ruch - Poruszasz nie swoja figura";
+        cout<<"Incorrect move - it is not your piece";
         return 0;
     }
 
@@ -211,7 +211,7 @@ bool MakeMove(figure **white, figure **black, bool *who, figure* b[][8], char* p
         }
     }
     if(!LegalMove){
-        cout<<"Bledny ruch - Figura ta nie ma takiego ruchu w zakresie\n";
+        cout<<"Incorrect move - this piece cannot move there\n";
         return 0;
     }
 
@@ -230,18 +230,18 @@ bool MakeMove(figure **white, figure **black, bool *who, figure* b[][8], char* p
 
     // Additional move condition for pawn
     if(fig->getname()=='P'&&!PawnMoveAdditionalCondition(fig,pos2,b)){
-        cout<<"Bledny ruch - Nie mozesz ruszyc piona w ten sposob\n";
+        cout<<"Incorrect move - you cannot move your pawn there\n";
         return 0;
     }
                         
     if(!LegalMove){
-        cout<<"Bledny ruch - Inna figura stoi na drodze\n";
+        cout<<"Incorrect move - other figure is blocking the move\n";
         return 0;
     }
 
     // Testing, if the player is trying to take an own figure 
     if((b[x2][y2]!=nullptr)&&(b[x2][y2]->getcolor()==fig->getcolor())){
-        cout<<"Bledny ruch - Probujesz zbic wlasna figure\n";
+        cout<<"Incorrect move - you are trying to take your own piece\n";
         return 0;
     }
 
@@ -253,11 +253,11 @@ bool MakeMove(figure **white, figure **black, bool *who, figure* b[][8], char* p
         int oldRockCol = pos2[0] == 'G' ? 7 : 0;
         char rookCol = pos2[0]=='G' ? 'F' : 'C';
         if(b[oldRockCol][row]==nullptr){
-            cout<<"Blad - nie mozna wykonac roszady, figura wczesniej sie poruszyla\n";
+            cout<<"Incorrect move - piece already moved\n";
             return 0;
         }
         if(fbw[*who][12]->gethasmoved()==true||b[oldRockCol][row]->gethasmoved()==true){
-            cout<<"Blad - nie mozna wykonac roszady, figura wczesniej sie poruszyla\n";
+            cout<<"Incorrect move - piece already moved\n";
             return 0;
         }
 
@@ -297,7 +297,7 @@ bool MakeMove(figure **white, figure **black, bool *who, figure* b[][8], char* p
     LegalMove = IsKingSave(fig,pos2,who,b,fbw);
  
     if(!LegalMove){
-        cout<<"Bledny ruch - Odslaniasz swojego krola\n";
+        cout<<"Incorrect move - you reveal your king\n";
         return 0;
     }
 
@@ -498,7 +498,7 @@ bool PawnMoveAdditionalCondition(figure* fig,char* pos2, figure *b[][8]){
     }
 
 void PawnPromotion(figure* fig,bool *who, figure** white, figure** black, figure* b[][8]){  
-    cout<<"Wybierz nowa figure dla piona w polu przemiany ('R','H','B','Q'): ";
+    cout<<"Promotion. Choose figure ('R','H','B','Q'): ";
     string choose;
     int i;
     for(i=0;i<16;i++){
@@ -515,7 +515,7 @@ void PawnPromotion(figure* fig,bool *who, figure** white, figure** black, figure
         case 'H': fig = new knight; break;
         case 'B': fig = new bishop; break;
         case 'Q': fig = new queen; break;
-        default: cout<<"Dziwny blad"<<endl;
+        default: cout<<"Impossible case"<<endl;
     }
     fig->setingame(true);
     fig->place(tpos);
